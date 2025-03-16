@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="800.0" prefWidth="1000.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hellofx.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <GridPane prefHeight="500.0" prefWidth="1000.0" VBox.vgrow="ALWAYS">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+             <GridPane GridPane.rowIndex="0">
+                 <columnConstraints>
+                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="368.0" minWidth="5.0" prefWidth="183.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="777.0" minWidth="592.0" prefWidth="777.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                     <RowConstraints vgrow="SOMETIMES" />
+                     <RowConstraints vgrow="SOMETIMES" />
+                     <RowConstraints vgrow="SOMETIMES" />
+                     <RowConstraints vgrow="SOMETIMES" />
+                     <RowConstraints vgrow="SOMETIMES" />
+                     <RowConstraints vgrow="SOMETIMES" />
+                     <RowConstraints vgrow="SOMETIMES" />
+                     <RowConstraints vgrow="SOMETIMES" />
+                     <RowConstraints vgrow="SOMETIMES" />
+                 </rowConstraints>
+                 <children>
+                     <Text text="Diák adatok" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+
+                     <Text text="Vezetékn év:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                     <TextField fx:id="vezetekNevInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                     <Text text="Kereszt név:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                     <TextField fx:id="keresztNevInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                     <Text text="Születés év:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                     <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                     <Text text="Év folyam:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Spinner GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                     <Text text="Osztály:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                         <Text textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="5">nemjo</Text>
+                     <HBox fx:id="classInput" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5" xmlns:fx="http://javafx.com/fxml">
+                         <CheckBox fx:id="checkBox1" text="Option 1" />
+                         <CheckBox fx:id="checkBox2" text="Option 2" />
+                         <CheckBox fx:id="checkBox3" text="Option 3" />
+                     </HBox>
+
+                     <Text text="Tanulmányi szint:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                     <ComboBox fx:id="tanulmanyiSzintInput" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                         <items>
+                             <FXCollections fx:factory="observableArrayList">
+                                 <String fx:value="Option 1" />
+                                 <String fx:value="Option 2" />
+                                 <String fx:value="Option 3" />
+                             </FXCollections>
+                         </items>
+                     </ComboBox>
+                     <GridPane GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="7">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" />
+                            <ColumnConstraints hgrow="SOMETIMES" />
+                            <ColumnConstraints hgrow="SOMETIMES" />
+                        </columnConstraints>
+                         <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES" />
+                         </rowConstraints>
+                     <children>
+
+                     <Button text="Új adat" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                     <Button text="Mentés" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                     <Button text="Törlés" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                     </children>
+                     </GridPane>
+                 </children>
+             </GridPane>
+            <TableView fx:id="studentTableView" prefHeight="300.0" prefWidth="1000.0" GridPane.rowIndex="1">
+              <columns>
+                <TableColumn prefWidth="75.0" text="Vezeték név">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="FirstName" />
+                    </cellValueFactory>
+                </TableColumn>
+                  <TableColumn prefWidth="75.0" text="Kereszt név">
+                      <cellValueFactory>
+                          <PropertyValueFactory property="LastName" />
+                      </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn prefWidth="75.0" text="Születési év">
+                      <cellValueFactory>
+                          <PropertyValueFactory property="BirthDate" />
+                      </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn prefWidth="75.0" text="Évfolyam">
+                      <cellValueFactory>
+                          <PropertyValueFactory property="SchoolYear" />
+                      </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn prefWidth="75.0" text="Osztály">
+                      <cellValueFactory>
+                          <PropertyValueFactory property="SchoolClass" />
+                      </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn prefWidth="75.0" text="Tanulmányi szint">
+                      <cellValueFactory>
+                          <PropertyValueFactory property="EducationLevel" />
+                      </cellValueFactory>
+                  </TableColumn>
+              </columns>
+            </TableView>
+         </children>
+      </GridPane>
+   </children>
+</VBox>
