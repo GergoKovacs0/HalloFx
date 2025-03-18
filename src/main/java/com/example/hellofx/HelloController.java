@@ -18,10 +18,10 @@ public class HelloController {
     private TextField keresztNevInput;
     @FXML
     private DatePicker birthDateInput;
-    @FXML
-    private Spinner<Integer> schoolYearInput;
-    @FXML
-    private ComboBox<Student.SchoolClassType> osztalyInput;
+    //@FXML
+    //private Spinner<Integer> schoolYearInput;
+    //@FXML
+    //private ComboBox<Student.SchoolClassType> osztalyInput;
     @FXML
     private ComboBox<String> tanulmanyiSzintInput;
     @FXML
@@ -46,30 +46,30 @@ public class HelloController {
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                     Student clickedStudent = row.getItem();
-                    selectedStudent = new SimpleObjectProperty<>(clickedStudent);
+                    selectedStudent.set(clickedStudent);  // Correctly updating the property
                 }
             });
             return row;
         });
 
+
         selectedStudent.addListener((obs, oldStudent, newStudent) -> {
+            System.out.println("sor");
             if (newStudent != null) {
                 vezetekNevInput.setText(newStudent.getLastName());
                 keresztNevInput.setText(newStudent.getFirstName());
                 birthDateInput.setValue(newStudent.getBirthDate());
-                schoolYearInput.getValueFactory().setValue(newStudent.getSchoolYear());
-                osztalyInput.setValue(newStudent.getSchoolClass());
+                //schoolYearInput.getValueFactory().setValue(newStudent.getSchoolYear());
+                //osztalyInput.setValue(newStudent.getSchoolClass());
                 tanulmanyiSzintInput.setValue(newStudent.getEducationLevel());
             } else {
                 vezetekNevInput.clear();
                 keresztNevInput.clear();
                 birthDateInput.setValue(null);
-                schoolYearInput.getValueFactory().setValue(0);
-                osztalyInput.setValue(null);
+                //schoolYearInput.getValueFactory().setValue(0);
+                //osztalyInput.setValue(null);
                 tanulmanyiSzintInput.setValue(null);
             }
         });
     }
-
-
 }

@@ -48,10 +48,10 @@
                      <TextField fx:id="keresztNevInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                      <Text text="Születés év:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                     <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                     <DatePicker fx:id="birthDateInput" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                      <Text text="Év folyam:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <Spinner GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Spinner fx:id="schoolYearInput" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                      <Text text="Osztály:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                          <Text textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="5">nemjo</Text>
