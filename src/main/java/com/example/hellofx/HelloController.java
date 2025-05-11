@@ -10,6 +10,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class HelloController {
     @FXML
@@ -27,14 +28,15 @@ public class HelloController {
     @FXML
     private TableView<Student> studentTableView;
 
+
+
     private ObservableList<Student> studentList;
     private ObjectProperty<Student> selectedStudent = new SimpleObjectProperty<Student>(new Student());
     @FXML
     public void initialize() {
-        System.out.println("HelloController initialized");
         studentList = FXCollections.observableArrayList(
-                new Student("John", "Doe", LocalDate.of(2000, 1, 1), 12, Student.SchoolClassType.ClassA, "érettségi"),
-                new Student("Jane", "Smith", LocalDate.of(2001, 2, 2), 11, Student.SchoolClassType.ClassB, "szakmai érettségi")
+                new Student(1, "John", "Doe", LocalDate.of(2000, 1, 1), 12, Student.SchoolClassType.ClassA, "érettségi"),
+                new Student(2, "Jane", "Smith", LocalDate.of(2001, 2, 2), 11, Student.SchoolClassType.ClassB, "szakmai érettségi")
         );
 
         studentTableView.setItems(studentList);
@@ -72,4 +74,21 @@ public class HelloController {
             }
         });
     }
+    @FXML
+    private void handleNewButtonClick(){
+        Student newStudent = new Student();
+
+        Optional<Student> studentWithMaxId = studentList.stream()
+                .max((s1, s2) -> Integer.compare(s1.getId(), s2.getId()));
+
+        Optional<Integer> maxId = studentWithMaxId.map(Student::getId);
+
+        newStudent.setId(maxId.orElse(0) + 1);
+
+        selectedStudent.set(new Student());
+    };
+    @FXML
+    private void handleSaveButtonClick(){};
+    @FXML
+    private void handleDeleteButtonClick(){};
 }

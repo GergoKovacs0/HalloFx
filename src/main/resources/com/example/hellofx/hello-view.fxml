@@ -82,9 +82,9 @@
                          </rowConstraints>
                      <children>
 
-                     <Button text="Új adat" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                     <Button text="Mentés" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                     <Button text="Törlés" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                     <Button fx:id="newButton" onAction="#handleNewButtonClick" text="Új adat" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                     <Button fx:id="saveButton" onAction="#handleSaveButtonClick" text="Mentés" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                     <Button fx:id="deleteButton" onAction="#handleDeleteButtonClick" text="Törlés" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                      </children>
                      </GridPane>
                  </children>

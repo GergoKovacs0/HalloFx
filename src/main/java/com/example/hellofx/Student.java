@@ -8,15 +8,17 @@ import java.util.Date;
 public class Student {
 
     public enum SchoolClassType { ClassA, ClassB, ClassC}
-    
-    public String FirstName;
-    public String LastName;
-    public LocalDate BirthDate;
-    public int SchoolYear;
-    public SchoolClassType SchoolClass;
-    public String EducationLevel;
 
-    public Student(String firstName, String lastName, LocalDate birthDate, int schoolYear, SchoolClassType schoolClass, String educationLevel) {
+    private int Id;
+    private String FirstName;
+    private String LastName;
+    private LocalDate BirthDate;
+    private int SchoolYear;
+    private SchoolClassType SchoolClass;
+    private String EducationLevel;
+
+    public Student(int id, String firstName, String lastName, LocalDate birthDate, int schoolYear, SchoolClassType schoolClass, String educationLevel) {
+        Id = id;
         FirstName = firstName;
         LastName = lastName;
         BirthDate = birthDate;
@@ -26,12 +28,21 @@ public class Student {
     }
     
     public Student(){
+        Id = 0;
         FirstName = "";
         LastName = "";
         BirthDate = LocalDate.now();
         SchoolYear = 0;
         SchoolClass = SchoolClassType.ClassA;
         EducationLevel = "";
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 
     public String getFirstName() {
