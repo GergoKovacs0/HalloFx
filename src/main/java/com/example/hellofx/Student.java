@@ -1,5 +1,7 @@
 package com.example.hellofx;
 
+import javafx.beans.property.*;
+
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -7,101 +9,123 @@ import java.util.Date;
 
 public class Student {
 
-    public enum SchoolClassType { ClassA, ClassB, ClassC}
+    public enum SchoolClassType { ClassA, ClassB, ClassC }
 
-    private int Id;
-    private String FirstName;
-    private String LastName;
-    private LocalDate BirthDate;
-    private int SchoolYear;
-    private SchoolClassType SchoolClass;
-    private String EducationLevel;
+    private final IntegerProperty id = new SimpleIntegerProperty();
+    private final StringProperty firstName = new SimpleStringProperty();
+    private final StringProperty lastName = new SimpleStringProperty();
+    private final ObjectProperty<LocalDate> birthDate = new SimpleObjectProperty<>();
+    private final IntegerProperty schoolYear = new SimpleIntegerProperty();
+    private final ObjectProperty<SchoolClassType> schoolClass = new SimpleObjectProperty<>();
+    private final StringProperty educationLevel = new SimpleStringProperty();
 
     public Student(int id, String firstName, String lastName, LocalDate birthDate, int schoolYear, SchoolClassType schoolClass, String educationLevel) {
-        Id = id;
-        FirstName = firstName;
-        LastName = lastName;
-        BirthDate = birthDate;
-        SchoolYear = schoolYear;
-        SchoolClass = schoolClass;
-        EducationLevel = educationLevel;
+        this.id.set(id);
+        this.firstName.set(firstName);
+        this.lastName.set(lastName);
+        this.birthDate.set(birthDate);
+        this.schoolYear.set(schoolYear);
+        this.schoolClass.set(schoolClass);
+        this.educationLevel.set(educationLevel);
     }
-    
-    public Student(){
-        Id = 0;
-        FirstName = "";
-        LastName = "";
-        BirthDate = LocalDate.now();
-        SchoolYear = 0;
-        SchoolClass = SchoolClassType.ClassA;
-        EducationLevel = "";
+
+    public Student() {
+        this(0, "", "", LocalDate.now(), 0, SchoolClassType.ClassA, "");
     }
 
     public int getId() {
-        return Id;
+        return id.get();
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id.set(id);
+    }
+
+    public IntegerProperty idProperty() {
+        return id;
     }
 
     public String getFirstName() {
-        return FirstName;
+        return firstName.get();
     }
 
     public void setFirstName(String firstName) {
-        FirstName = firstName;
+        this.firstName.set(firstName);
+    }
+
+    public StringProperty firstNameProperty() {
+        return firstName;
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName.get();
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName.set(lastName);
+    }
+
+    public StringProperty lastNameProperty() {
+        return lastName;
     }
 
     public LocalDate getBirthDate() {
-        return BirthDate;
+        return birthDate.get();
     }
 
     public void setBirthDate(LocalDate birthDate) {
-        BirthDate = birthDate;
+        this.birthDate.set(birthDate);
+    }
+
+    public ObjectProperty<LocalDate> birthDateProperty() {
+        return birthDate;
     }
 
     public int getSchoolYear() {
-        return SchoolYear;
+        return schoolYear.get();
     }
 
     public void setSchoolYear(int schoolYear) {
-        SchoolYear = schoolYear;
+        this.schoolYear.set(schoolYear);
+    }
+
+    public IntegerProperty schoolYearProperty() {
+        return schoolYear;
     }
 
     public SchoolClassType getSchoolClass() {
-        return SchoolClass;
+        return schoolClass.get();
     }
 
     public void setSchoolClass(SchoolClassType schoolClass) {
-        SchoolClass = schoolClass;
+        this.schoolClass.set(schoolClass);
+    }
+
+    public ObjectProperty<SchoolClassType> schoolClassProperty() {
+        return schoolClass;
     }
 
     public String getEducationLevel() {
-        return EducationLevel;
+        return educationLevel.get();
     }
 
     public void setEducationLevel(String educationLevel) {
-        EducationLevel = educationLevel;
+        this.educationLevel.set(educationLevel);
+    }
+
+    public StringProperty educationLevelProperty() {
+        return educationLevel;
     }
 
     @Override
     public String toString() {
         return "Student{" +
-                "FirstName='" + FirstName + '\'' +
-                ", LastName='" + LastName + '\'' +
-                ", BirthDate=" + BirthDate +
-                ", SchoolYear=" + SchoolYear +
-                ", SchoolClass=" + SchoolClass +
-                ", EducationLevel='" + EducationLevel + '\'' +
+                "FirstName='" + firstName + '\'' +
+                ", LastName='" + lastName + '\'' +
+                ", BirthDate=" + birthDate +
+                ", SchoolYear=" + schoolYear +
+                ", SchoolClass=" + schoolClass +
+                ", EducationLevel='" + educationLevel + '\'' +
                 '}';
     }
 }

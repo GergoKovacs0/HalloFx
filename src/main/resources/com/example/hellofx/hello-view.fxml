@@ -89,7 +89,7 @@
                      </GridPane>
                  </children>
              </GridPane>
-            <TableView fx:id="studentTableView" prefHeight="300.0" prefWidth="1000.0" GridPane.rowIndex="1">
+            <TableView fx:id="studentTableView" onMouseClicked="#handleRowSelected" prefHeight="300.0" prefWidth="1000.0" GridPane.rowIndex="1">
               <columns>
                 <TableColumn prefWidth="75.0" text="Vezeték név">
                     <cellValueFactory>

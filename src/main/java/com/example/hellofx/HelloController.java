@@ -19,10 +19,10 @@ public class HelloController {
     private TextField keresztNevInput;
     @FXML
     private DatePicker birthDateInput;
-    //@FXML
-    //private Spinner<Integer> schoolYearInput;
-    //@FXML
-    //private ComboBox<Student.SchoolClassType> osztalyInput;
+    @FXML
+    private Spinner<Integer> schoolYearInput;
+//    @FXML
+//    private ComboBox<Student.SchoolClassType> osztalyInput;
     @FXML
     private ComboBox<String> tanulmanyiSzintInput;
     @FXML
@@ -31,7 +31,7 @@ public class HelloController {
 
 
     private ObservableList<Student> studentList;
-    private ObjectProperty<Student> selectedStudent = new SimpleObjectProperty<Student>(new Student());
+    private ObjectProperty<Student> selectedStudent = new SimpleObjectProperty<Student>();
     @FXML
     public void initialize() {
         studentList = FXCollections.observableArrayList(
@@ -43,37 +43,47 @@ public class HelloController {
 
         tanulmanyiSzintInput.setItems(FXCollections.observableArrayList("érettségi", "szakmai érettségi", "szakmai vizsga"));
 
-        studentTableView.setRowFactory(tv -> {
-            TableRow<Student> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-                    Student clickedStudent = row.getItem();
-                    selectedStudent.set(clickedStudent);  // Correctly updating the property
-                }
-            });
-            return row;
-        });
+        schoolYearInput.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, 1));
+
 
 
         selectedStudent.addListener((obs, oldStudent, newStudent) -> {
-            System.out.println("sor");
             if (newStudent != null) {
-                vezetekNevInput.setText(newStudent.getLastName());
-                keresztNevInput.setText(newStudent.getFirstName());
-                birthDateInput.setValue(newStudent.getBirthDate());
-                //schoolYearInput.getValueFactory().setValue(newStudent.getSchoolYear());
-                //osztalyInput.setValue(newStudent.getSchoolClass());
-                tanulmanyiSzintInput.setValue(newStudent.getEducationLevel());
-            } else {
-                vezetekNevInput.clear();
-                keresztNevInput.clear();
-                birthDateInput.setValue(null);
-                //schoolYearInput.getValueFactory().setValue(0);
-                //osztalyInput.setValue(null);
-                tanulmanyiSzintInput.setValue(null);
+                vezetekNevInput.textProperty().bindBidirectional(newStudent.firstNameProperty());
+                keresztNevInput.textProperty().bindBidirectional(newStudent.lastNameProperty());
+                birthDateInput.valueProperty().bindBidirectional(newStudent.birthDateProperty());
+                schoolYearInput.getValueFactory().valueProperty().bindBidirectional(newStudent.schoolYearProperty().asObject());
+                tanulmanyiSzintInput.valueProperty().bindBidirectional(newStudent.educationLevelProperty());
             }
         });
+
+        studentTableView.setRowFactory(tv -> {
+            TableRow<Student> row = new TableRow<>();
+
+            row.setOnMouseClicked(event -> {
+                Student clickedStudent = row.getItem();
+                studentTableView.getSelectionModel().select(clickedStudent);
+            });
+
+            return  row;
+        });
     }
+
+    @FXML
+    private void handleRowSelected(MouseEvent event) {
+        System.out.println(studentList.getFirst().getFirstName());
+        Student clicked = studentList.get(studentTableView.getSelectionModel().getFocusedIndex());
+        System.out.println(studentTableView.getSelectionModel().getFocusedIndex());
+        System.out.println("clicked = " + clicked);
+
+        if (clicked != null) {
+            if (selectedStudent.get() == clicked) {
+                selectedStudent.set(null); // Clear the selection
+            }
+            selectedStudent.set(clicked); // Update the ObjectProperty
+        }
+    }
+
     @FXML
     private void handleNewButtonClick(){
         Student newStudent = new Student();
@@ -85,10 +95,30 @@ public class HelloController {
 
         newStudent.setId(maxId.orElse(0) + 1);
 
-        selectedStudent.set(new Student());
+        selectedStudent = new SimpleObjectProperty<Student>();
     };
     @FXML
-    private void handleSaveButtonClick(){};
+    private void handleSaveButtonClick() {
+        System.out.println(selectedStudent);
+        int id = selectedStudent.get().getId();
+
+        studentList.stream()
+                .filter(student -> student.getId() == id)
+                .findFirst()
+                .ifPresent(student -> {
+                    student.setFirstName(selectedStudent.get().getFirstName());
+                    student.setLastName(selectedStudent.get().getLastName());
+                    student.setBirthDate(selectedStudent.get().getBirthDate());
+                    student.setSchoolYear(selectedStudent.get().getSchoolYear());
+                    student.setSchoolClass(selectedStudent.get().getSchoolClass());
+                    student.setEducationLevel(selectedStudent.get().getEducationLevel());
+                });
+
+        studentTableView.refresh();
+    }
     @FXML
-    private void handleDeleteButtonClick(){};
+    private void handleDeleteButtonClick(){
+        int id = selectedStudent.get().getId();
+        studentList.removeIf(student -> student.getId() == id);
+    };
 }
