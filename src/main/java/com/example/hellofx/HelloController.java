@@ -60,12 +60,13 @@ public class HelloController {
 
         selectedStudent.addListener((obs, oldStudent, newStudent) -> {
             // Unbind previous bindings
-            vezetekNevInput.textProperty().unbind();
-            keresztNevInput.textProperty().unbind();
-            birthDateInput.valueProperty().unbind();
-            schoolYearInput.getValueFactory().valueProperty().unbind();
-            tanulmanyiSzintInput.valueProperty().unbind();
-
+            if(oldStudent != null) {
+                vezetekNevInput.textProperty().unbindBidirectional(oldStudent.firstNameProperty());
+                keresztNevInput.textProperty().unbindBidirectional(oldStudent.lastNameProperty());
+                birthDateInput.valueProperty().unbindBidirectional(oldStudent.birthDateProperty());
+                schoolYearInput.getValueFactory().valueProperty().unbindBidirectional(oldStudent.schoolYearProperty().asObject());
+                tanulmanyiSzintInput.valueProperty().unbindBidirectional(oldStudent.educationLevelProperty());
+            }
             if (newStudent != null) {
                 // Bind to the new selected student
                 vezetekNevInput.textProperty().bindBidirectional(newStudent.firstNameProperty());
@@ -92,8 +93,14 @@ public class HelloController {
                     System.out.println(studentList.get(studentTableView.getSelectionModel().getSelectedIndex()).getFirstName());
                     Student clickedStudent = row.getItem();
                     System.out.println("clickedStudent = " + clickedStudent.getFirstName());
-                    if (selectedStudent.get() == clickedStudent) {
-                        selectedStudent.set(null); // Clear the selection
+
+                    if(selectedStudent.get() == null){
+                        selectedStudent.set(clickedStudent);
+                        return;
+                    }
+
+                    if (selectedStudent.get().equals(clickedStudent)) {
+                        selectedStudent.set(null);
                     } else {
                         selectedStudent.set(clickedStudent); // Update the ObjectProperty
                     }
@@ -109,7 +116,7 @@ public class HelloController {
         Student clicked = studentTableView.getSelectionModel().getSelectedItem();
 
         if (clicked != null) {
-            if (selectedStudent.get() == clicked) {
+            if (selectedStudent.get().equals(clicked)) {
                 selectedStudent.set(null); // Clear the selection
                 return;
             }
