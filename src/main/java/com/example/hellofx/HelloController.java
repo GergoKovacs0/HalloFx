@@ -21,8 +21,17 @@ public class HelloController {
     private DatePicker birthDateInput;
     @FXML
     private Spinner<Integer> schoolYearInput;
-//    @FXML
-//    private ComboBox<Student.SchoolClassType> osztalyInput;
+
+    @FXML
+    private ToggleGroup classToggle;
+
+    @FXML
+    private  RadioButton rbClassA;
+    @FXML
+    private  RadioButton rbClassB;
+        @FXML
+        private  RadioButton rbClassC;
+
     @FXML
     private ComboBox<String> tanulmanyiSzintInput;
     @FXML
@@ -47,6 +56,11 @@ public class HelloController {
                 new Student(10, "Olivia", "Jackson", LocalDate.of(2008, 10, 10), 3, Student.SchoolClassType.ClassA, "érettségi")
         );
 
+        classToggle = new ToggleGroup();
+        rbClassA.setToggleGroup(classToggle);
+        rbClassB.setToggleGroup(classToggle);
+        rbClassC.setToggleGroup(classToggle);
+
 //        studentTableView.setItems(studentList);
         ObservableList<Student> unmodifiableStudentList = FXCollections.unmodifiableObservableList(studentList);
 
@@ -54,7 +68,7 @@ public class HelloController {
         studentTableView.setItems(unmodifiableStudentList);
         tanulmanyiSzintInput.setItems(FXCollections.observableArrayList("érettségi", "szakmai érettségi", "szakmai vizsga"));
 
-        schoolYearInput.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, 1));
+        schoolYearInput.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 13, 1));
 
 
 
@@ -67,6 +81,7 @@ public class HelloController {
                 schoolYearInput.getValueFactory().valueProperty().unbindBidirectional(oldStudent.schoolYearProperty().asObject());
                 tanulmanyiSzintInput.valueProperty().unbindBidirectional(oldStudent.educationLevelProperty());
             }
+
             if (newStudent != null) {
                 // Bind to the new selected student
                 vezetekNevInput.textProperty().bindBidirectional(newStudent.firstNameProperty());
@@ -74,6 +89,12 @@ public class HelloController {
                 birthDateInput.valueProperty().bindBidirectional(newStudent.birthDateProperty());
                 schoolYearInput.getValueFactory().valueProperty().bindBidirectional(newStudent.schoolYearProperty().asObject());
                 tanulmanyiSzintInput.valueProperty().bindBidirectional(newStudent.educationLevelProperty());
+
+                switch (newStudent.getSchoolClass()){
+                    case ClassA -> rbClassA.setSelected(true);
+                    case ClassB -> rbClassB.setSelected(true);
+                    case ClassC -> rbClassC.setSelected(true);
+                }
             } else {
                 // Clear the input fields if no student is selected
                 vezetekNevInput.clear();
@@ -86,13 +107,11 @@ public class HelloController {
 
         studentTableView.setRowFactory(tv -> {
             TableRow<Student> row = new TableRow<>();
-            System.out.println("Factorying");
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
                     System.out.println(studentTableView.getSelectionModel().getSelectedIndex());
                     System.out.println(studentList.get(studentTableView.getSelectionModel().getSelectedIndex()).getFirstName());
                     Student clickedStudent = row.getItem();
-                    System.out.println("clickedStudent = " + clickedStudent.getFirstName());
 
                     if(selectedStudent.get() == null){
                         selectedStudent.set(clickedStudent);
@@ -109,19 +128,11 @@ public class HelloController {
 
             return  row;
         });
-    }
-
-    @FXML
-    private void handleRowSelected(MouseEvent event) {
-        Student clicked = studentTableView.getSelectionModel().getSelectedItem();
-
-        if (clicked != null) {
-            if (selectedStudent.get().equals(clicked)) {
-                selectedStudent.set(null); // Clear the selection
-                return;
-            }
-            selectedStudent.set(clicked); // Update the ObjectProperty
-        }
+        classToggle.selectedToggleProperty().addListener((obs,o,n) -> {
+            if (n == rbClassA)    selectedStudent.get().setSchoolClass(Student.SchoolClassType.ClassA);
+            else if (n == rbClassB) selectedStudent.get().setSchoolClass(Student.SchoolClassType.ClassB);
+            else if (n == rbClassC) selectedStudent.get().setSchoolClass(Student.SchoolClassType.ClassC);
+        });
     }
 
     @FXML
@@ -135,30 +146,38 @@ public class HelloController {
 
         newStudent.setId(maxId.orElse(0) + 1);
 
-        selectedStudent = new SimpleObjectProperty<Student>();
+        selectedStudent.set(newStudent);
     };
     @FXML
     private void handleSaveButtonClick() {
         System.out.println(selectedStudent);
         int id = selectedStudent.get().getId();
 
-        studentList.stream()
+        boolean studentUpdated = studentList.stream()
                 .filter(student -> student.getId() == id)
                 .findFirst()
-                .ifPresent(student -> {
+                .map(student -> {
                     student.setFirstName(selectedStudent.get().getFirstName());
                     student.setLastName(selectedStudent.get().getLastName());
                     student.setBirthDate(selectedStudent.get().getBirthDate());
                     student.setSchoolYear(selectedStudent.get().getSchoolYear());
                     student.setSchoolClass(selectedStudent.get().getSchoolClass());
                     student.setEducationLevel(selectedStudent.get().getEducationLevel());
-                });
+                    return true; // Indicate that the student was updated
+                })
+                .orElse(false); // If no student was found, return false
+
+        if (!studentUpdated) {
+            studentList.add(selectedStudent.get());
+        }
 
         studentTableView.refresh();
     }
+
     @FXML
     private void handleDeleteButtonClick(){
         int id = selectedStudent.get().getId();
         studentList.removeIf(student -> student.getId() == id);
+
     };
 }
